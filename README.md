@@ -26,4 +26,5 @@ Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Fores
 * Items
 
 ### Wireframe
-![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/images/00_Slime.svg)
+
+![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/00_Slime.svg)
