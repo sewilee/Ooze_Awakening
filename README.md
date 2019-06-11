@@ -1,5 +1,7 @@
 # The Legend of Slime: Ooze's Awakening
 
+![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/blue-slime-png-2.svg)
+
 ### Introduction
 The Legend of Slime is an adventure game inspired by Zelda. 
 
@@ -24,3 +26,4 @@ Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Fores
 * Items
 
 ### Wireframe
+![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/images/00_Slime.svg)
