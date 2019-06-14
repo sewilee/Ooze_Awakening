@@ -1,7 +1,7 @@
 import GameObject from './game_object';
 import Input from './input';
-import GameMap from './map';
 import Box from './play_box';
+import Villian from './villian';
 
 class Engine{
     constructor(){
@@ -14,6 +14,7 @@ class Engine{
         this.lastTime = new Date().getTime();
         this.objs = [];
         this.colliders = [];
+        this.villians = [];
 
         this.input = new Input;
 
@@ -30,13 +31,18 @@ class Engine{
     }
 
     addColliders(colliders){
-        colliders.forEach(collider => {
-            if(collider instanceof Box){
-                this.colliders.push(collider);
-            } else {
-                console.error("Collider is not a Box");
-            }
-        });
+        if(colliders instanceof Villian){
+            this.villians.push(colliders)
+            // debugger
+        } else {
+            colliders.forEach(collider => {
+                if(collider instanceof Box){
+                    this.colliders.push(collider);
+                } else {
+                    console.error("Collider is not a Box");
+                }
+            });
+        }
     }
 
     getCollision(x, y, offset){
@@ -46,8 +52,21 @@ class Engine{
             if(result === true){
                 value = collider;
             }
-        })
+        });
         return value;
+    }
+
+    getVillian(x, y, offset){
+        let value = false;
+        this.villians.forEach(badGuy => {
+            const badGuyPos = new Box(badGuy.position[0] + badGuy.move, badGuy.position[1], 96, 96);
+            let result = badGuyPos.isInside(x, y, offset);
+            if(result === true){
+                // console.log("hit");
+                value = badGuyPos;
+            }
+        });
+        return value
     }
 
     loop(){

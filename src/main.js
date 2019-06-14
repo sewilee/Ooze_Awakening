@@ -3,6 +3,7 @@ import Player from './player';
 import GameMap from './map';
 import Camera from './camera.js';
 import Villian from './villian.js';
+import { random } from './utils';
 
 const mapJson = require('../assets/map/testing.json');
 
@@ -15,17 +16,22 @@ engine.addObject(map);
 engine.addColliders(map.getColliders());
 engine.offset = camera.offset;
 
-
 let hero = new Player(128, 128, engine, camera.offset);
 engine.addObject(hero);
 
-for(let i = 0; i < 5; i++){
-    const randomNum1 = Math.floor(Math.random() * 1000)
-    const randomNum2 = Math.floor(Math.random() * 1000)
+let badGuy = new Villian(448, 448, engine, camera.offset, 320, 0, hero.position);
+engine.addObject(badGuy);
+engine.addColliders(badGuy);
 
-    let badGuy = new Villian(randomNum1, randomNum2, engine, camera.offset);
-    engine.addObject(badGuy);
-}
+// for(let i = 0; i < 5; i++){
+//     let ranPosX = random(64, 832);
+//     let ranPosY = random(64, 832);
+//     let ranDis = random(192, 448);
+//     let ranFace = random(0, 1);
+//     let badGuy = new Villian(ranPosX, ranPosY, engine, camera.offset, ranDis, ranFace);
+//     engine.addObject(badGuy);
+//     engine.addColliders(badGuy);
+// }
 
 
 engine.update = (dt) => {
@@ -51,7 +57,5 @@ engine.update = (dt) => {
         !engine.input.isKeyDown("ArrowRight")){
         hero.facing = 0;
     }
-
     camera.update(hero.position[0], hero.position[1]);
-
 };

@@ -20,12 +20,14 @@ class Player extends GameObject{
     }
 
     translate(x, y){
-        let collider = this.engine.getCollision(
-        x + this.position[0] + this.offset[0] + this.renderables[0].subWidth / 2,
-        y + this.position[1] + this.offset[1] + this.renderables[0].subHeight - 10,
-        this.offset
-        )
-        if (collider !== false){
+
+        let pX = x + this.position[0] + this.offset[0] + this.renderables[0].subWidth / 2;
+        let pY = y + this.position[1] + this.offset[1] + this.renderables[0].subHeight - 10;
+
+        let collider = this.engine.getCollision(pX, pY, this.offset);
+        let villian = this.engine.getVillian(pX, pY, this.offset);
+
+        if (collider !== false || villian !== false){
             x = 0;
             y = 0;
         }
