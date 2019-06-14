@@ -2,6 +2,7 @@ import Engine from './engine.js';
 import Player from './player';
 import GameMap from './map';
 import Camera from './camera.js';
+import Villian from './villian.js';
 
 const mapJson = require('../assets/map/testing.json');
 
@@ -17,6 +18,15 @@ engine.offset = camera.offset;
 
 let hero = new Player(128, 128, engine, camera.offset);
 engine.addObject(hero);
+
+for(let i = 0; i < 5; i++){
+    const randomNum1 = Math.floor(Math.random() * 1000)
+    const randomNum2 = Math.floor(Math.random() * 1000)
+
+    let badGuy = new Villian(randomNum1, randomNum2, engine, camera.offset);
+    engine.addObject(badGuy);
+}
+
 
 engine.update = (dt) => {
     if (engine.input.isKeyDown("ArrowUp")) {

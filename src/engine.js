@@ -59,7 +59,7 @@ class Engine{
             this.update(dt);
         }
 
-        this.ctx.fillStyle = "black";
+        this.ctx.fillStyle = "lightgrey";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         //do drawing here
