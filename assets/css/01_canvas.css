@@ -3,7 +3,12 @@
     margin: 0;
 }
 
+@font-face {
+    font-family: 'Patrick Hand SC', cursive;
+}
+
 .canvas-header{
+    /* position: relative; */
     display: flex;
     justify-content: center;
     padding: 24px;
@@ -11,10 +16,27 @@
     font-size: 48px;
 }
 
-canvas{
-    width: 600px;
-    height: 400px;
-    display: block;
-    margin: 0 auto;
-    border: 1px solid grey;
+.canvas-container{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    /* margin: 0 auto; */
+    height: 640px;
+    width: 100%;
 }
+
+canvas{
+    position: absolute;
+    top: 0;
+    left: calc(50% - 224);
+}
+
+/* .canvas-main{
+    display: block;
+    border: 1px solid grey;
+    z-index: 1;
+}
+
+.canvas-dmg{
+    z-index: 2;
+} */

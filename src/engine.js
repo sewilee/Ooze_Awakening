@@ -20,7 +20,18 @@ class Engine{
 
         this.input = new Input;
 
+        // this.gameOver = false;
+
         window.requestAnimationFrame(this.loop.bind(this));
+    }
+
+    endGame(){
+        const canvas = document.getElementById("canvas-endGame");
+        const ctx = canvas.getContext('2d');
+
+        ctx.font = "48pt Patrick Hand SC";
+        ctx.fillStyle = "red";
+        ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
     }
 
     addObject(obj){
@@ -78,31 +89,40 @@ class Engine{
     }
 
     loop(){
-        let time = new Date().getTime();
-        let dt = (time - this.lastTime) / 1000;
-
-        //do update here
-        if(this.update){
-            this.update(dt);
-        }
-
-        this.ctx.fillStyle = "lightgrey";
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        //do drawing here
-        this.objs.forEach(obj => {
-            obj.update(this, dt);
-            obj.draw(this.ctx, this.canvas);
-        });
-
-        if(this.phyDebug){
-            this.colliders.forEach(collider => {
-                collider.draw(this.ctx, this.offset);
+        if(this.gameOver){
+            this.endGame();
+        } else {
+            let time = new Date().getTime();
+            let dt = (time - this.lastTime) / 2000;
+            
+            //do update here
+            if(this.update){
+                this.update(dt);
+            }
+            
+            this.ctx.fillStyle = "lightgrey";
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            //do drawing here
+            this.objs.forEach(obj => {
+                obj.update(this, dt);
+                obj.draw(this.ctx, this.canvas);
             });
+            
+            if (this.hero.gameOver === true) {
+                this.gameOver = true;
+            }
+            
+            if(this.phyDebug){
+                this.colliders.forEach(collider => {
+                    collider.draw(this.ctx, this.offset);
+                });
+            }
+    
+            this.lastTime = time;
+            window.requestAnimationFrame(this.loop.bind(this));
         }
-
-        this.lastTime = time;
-        window.requestAnimationFrame(this.loop.bind(this));
+        
     }
 }
 

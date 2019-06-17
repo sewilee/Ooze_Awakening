@@ -1,5 +1,6 @@
 import GameObject from './game_object';
 import Renderable from './renderable';
+import { faceOutText, fadeOutText } from './utils';
 
 class Player extends GameObject{
     constructor(x, y, engine, offset){
@@ -7,9 +8,10 @@ class Player extends GameObject{
         this.position = [x, y]
         this.engine = engine;
         this.offset = offset;
-        this.hearts = 3;
+        this.hearts = 1;
         this.currentHealth = 4 * this.hearts;
         this.prevHealth = this.currentHealth;
+        this.gameOver = false;
 
         this.facing = 0
         const img = "assets/images/slime-art.png";
@@ -30,6 +32,18 @@ class Player extends GameObject{
 
     updateHealth(hp){
         this.currentHealth += hp;
+        switch(this.currentHealth){
+            case 0:
+                this.gameOver = true;
+            case 1:
+                return fadeOutText("I told you so")
+            case 4:
+                return fadeOutText("You are about to die");
+            case 8:
+                return fadeOutText("Maybe you should run");
+            default: 
+                return fadeOutText("-1 HP");
+        }
     }
 
     translate(x, y){
@@ -59,17 +73,16 @@ class Player extends GameObject{
         ctx.save();
         
         ctx.translate(this.position[0] + this.offset[0], this.position[1] + this.offset[1]);
-
+        
         if(this.currentHealth < this.prevHealth){
-            let img = new Image();
-            img.src = "assets/images/klz_W4.png";
-
-            ctx.drawImage(img, 0, 0);
+            this.renderables[this.facing].draw(ctx);
+            // let img = new Image();
+            // img.src = "assets/images/klz_W4.png";
             this.prevHealth = this.currentHealth;
         } else {
             this.renderables[this.facing].draw(ctx);
         }
-
+        
         // debugger
         // this.camera.update(this.position[0], this.position[1]);
 

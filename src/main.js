@@ -5,6 +5,7 @@ import Camera from './camera.js';
 import Villain from './villain.js';
 import { random } from './utils';
 
+
 const mapJson = require('../assets/map/level01_50x50.json');
 
 let engine = new Engine();
@@ -25,31 +26,30 @@ engine.addObject(badGuy);
 engine.addColliders(badGuy);
 
 // for(let i = 0; i < 5; i++){
-//     let ranPosX = random(64, 832);
-//     let ranPosY = random(64, 832);
-//     let ranDis = random(192, 448);
-//     let ranFace = random(0, 1);
-//     let badGuy = new Villain(ranPosX, ranPosY, engine, camera.offset, ranDis, ranFace);
-//     engine.addObject(badGuy);
-//     engine.addColliders(badGuy);
-// }
-
-
+    //     let ranPosX = random(64, 832);
+    //     let ranPosY = random(64, 832);
+    //     let ranDis = random(192, 448);
+    //     let ranFace = random(0, 1);
+    //     let badGuy = new Villain(ranPosX, ranPosY, engine, camera.offset, ranDis, ranFace);
+    //     engine.addObject(badGuy);
+    //     engine.addColliders(badGuy);
+    // }
+    
 engine.update = (dt) => {
     if (engine.input.isKeyDown("ArrowUp")) {
-        hero.translate(0, -150 * dt);
+        hero.translate(0, -250 * dt);
         hero.facing = 1;
     }
     if (engine.input.isKeyDown("ArrowDown")) {
-        hero.translate(0, 150 * dt);
+        hero.translate(0, 250 * dt);
         hero.facing = 2;
     }
     if (engine.input.isKeyDown("ArrowLeft")) {
-        hero.translate(-150 * dt, 0);
-        hero.facing = 3;
+    hero.translate(-250 * dt, 0);
+    hero.facing = 3;
     }
     if (engine.input.isKeyDown("ArrowRight")){
-        hero.translate(150 * dt, 0);
+        hero.translate(250 * dt, 0);
         hero.facing = 4;
     }
     if (!engine.input.isKeyDown("ArrowUp") &&
@@ -60,3 +60,4 @@ engine.update = (dt) => {
     }
     camera.update(hero.position[0], hero.position[1]);
 };
+    

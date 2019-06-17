@@ -113,6 +113,8 @@ class Villian extends GameObject{
                 let time = new Date().getTime();
                 let dt = (time - this.lastTime) / 1000;
                 if(dt > 1.25){
+                    // debugger
+                    console.log("attack")
                     this.attack();
                     this.lastTime = time;
                 }
