@@ -8,7 +8,8 @@ class Player extends GameObject{
         this.engine = engine;
         this.offset = offset;
         this.hearts = 3;
-        this.health = 4 * this.hearts;
+        this.currentHealth = 4 * this.hearts;
+        this.prevHealth = this.currentHealth;
 
         this.facing = 0
         const img = "assets/images/slime-art.png";
@@ -28,9 +29,7 @@ class Player extends GameObject{
     }
 
     updateHealth(hp){
-        // console.log("-5")
-        // this.health += hp;
-        // debugger
+        this.currentHealth += hp;
     }
 
     translate(x, y){
@@ -58,11 +57,18 @@ class Player extends GameObject{
     draw(ctx){
         super.draw(ctx);
         ctx.save();
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = "red";
-        ctx.strokeRect(this.position[0] + this.offset[0], this.position[1] + this.offset[1], 64, 64);
+        
         ctx.translate(this.position[0] + this.offset[0], this.position[1] + this.offset[1]);
-        this.renderables[this.facing].draw(ctx);
+
+        if(this.currentHealth < this.prevHealth){
+            let img = new Image();
+            img.src = "assets/images/klz_W4.png";
+
+            ctx.drawImage(img, 0, 0);
+            this.prevHealth = this.currentHealth;
+        } else {
+            this.renderables[this.facing].draw(ctx);
+        }
 
         // debugger
         // this.camera.update(this.position[0], this.position[1]);

@@ -41,8 +41,7 @@ class Villian extends GameObject{
     }
 
     attack(){
-        this.hero.health += this.attackDMG;
-        console.log(this.hero.health);
+        this.hero.updateHealth(this.attackDMG);
     }
 
     checkHeroPosition(){
@@ -137,9 +136,6 @@ class Villian extends GameObject{
             this.checkCollision();
             this.movement();
         }
-
-        ctx.strokeStyle = "red";
-        ctx.strokeRect(this.position[0] + this.offset[0], this.position[1] + this.offset[1] + 32, 64, 96);
 
         ctx.translate(this.position[0] + this.offset[0], this.position[1] + this.offset[1]);
         
