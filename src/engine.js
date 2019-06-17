@@ -1,7 +1,8 @@
 import GameObject from './game_object';
 import Input from './input';
 import Box from './play_box';
-import Villian from './villian';
+import Villain from './villain';
+import Player from './player';
 
 class Engine{
     constructor(){
@@ -14,7 +15,8 @@ class Engine{
         this.lastTime = new Date().getTime();
         this.objs = [];
         this.colliders = [];
-        this.villians = [];
+        this.villains = [];
+        this.hero = null;
 
         this.input = new Input;
 
@@ -31,9 +33,11 @@ class Engine{
     }
 
     addColliders(colliders){
-        if(colliders instanceof Villian){
-            this.villians.push(colliders)
+        if(colliders instanceof Villain){
+            this.villains.push(colliders)
             // debugger
+        } else if (colliders instanceof Player){
+            this.hero = colliders;
         } else {
             colliders.forEach(collider => {
                 if(collider instanceof Box){
@@ -56,17 +60,21 @@ class Engine{
         return value;
     }
 
-    getVillian(x, y, offset){
+    getVillain(x, y, offset){
         let value = false;
-        this.villians.forEach(badGuy => {
-            const badGuyPos = new Box(badGuy.position[0] + badGuy.move, badGuy.position[1], 96, 96);
+        this.villains.forEach(badGuy => {
+            const { subWidth, subHeight } = badGuy.renderables[0];
+            // let dx = subWidth / 8;
+            let dy = subHeight / 4;
+            // const badGuyPos = new Box(badGuy.position[0], badGuy.position[1], subHeight, subWidth);
+            const badGuyPos = new Box(badGuy.position[0], badGuy.position[1] + dy, subHeight - dy, subWidth);
             let result = badGuyPos.isInside(x, y, offset);
             if(result === true){
                 // console.log("hit");
-                value = badGuyPos;
+                value = badGuy;
             }
         });
-        return value
+        return value;
     }
 
     loop(){

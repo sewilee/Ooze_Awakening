@@ -3,10 +3,10 @@ import Renderable from "./renderable";
 import Box from "./play_box";
 
 class GameMap extends GameObject{
-    constructor(mapJSON, mapImg, camera){
+    constructor(mapJSON, mapImg, camera) {
         super();
         this.scale = 2;
-        this.renderable = new Renderable(mapImg, 256, 512, 8, 16, 0, 128, 0, this.scale);
+        this.renderable = new Renderable(mapImg, 704, 800, 22, 25, 0, 550, 0, this.scale);
         this.data = mapJSON;
         this.colliders = [];
         this.camera = camera;
