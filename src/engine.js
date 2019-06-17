@@ -1,7 +1,8 @@
 import GameObject from './game_object';
 import Input from './input';
-import GameMap from './map';
 import Box from './play_box';
+import Villain from './villain';
+import Player from './player';
 
 class Engine{
     constructor(){
@@ -14,6 +15,8 @@ class Engine{
         this.lastTime = new Date().getTime();
         this.objs = [];
         this.colliders = [];
+        this.villains = [];
+        this.hero = null;
 
         this.input = new Input;
 
@@ -30,13 +33,20 @@ class Engine{
     }
 
     addColliders(colliders){
-        colliders.forEach(collider => {
-            if(collider instanceof Box){
-                this.colliders.push(collider);
-            } else {
-                console.error("Collider is not a Box");
-            }
-        });
+        if(colliders instanceof Villain){
+            this.villains.push(colliders)
+            // debugger
+        } else if (colliders instanceof Player){
+            this.hero = colliders;
+        } else {
+            colliders.forEach(collider => {
+                if(collider instanceof Box){
+                    this.colliders.push(collider);
+                } else {
+                    console.error("Collider is not a Box");
+                }
+            });
+        }
     }
 
     getCollision(x, y, offset){
@@ -46,7 +56,24 @@ class Engine{
             if(result === true){
                 value = collider;
             }
-        })
+        });
+        return value;
+    }
+
+    getVillain(x, y, offset){
+        let value = false;
+        this.villains.forEach(badGuy => {
+            const { subWidth, subHeight } = badGuy.renderables[0];
+            // let dx = subWidth / 8;
+            let dy = subHeight / 4;
+            // const badGuyPos = new Box(badGuy.position[0], badGuy.position[1], subHeight, subWidth);
+            const badGuyPos = new Box(badGuy.position[0], badGuy.position[1] + dy, subHeight - dy, subWidth);
+            let result = badGuyPos.isInside(x, y, offset);
+            if(result === true){
+                // console.log("hit");
+                value = badGuy;
+            }
+        });
         return value;
     }
 
@@ -59,7 +86,7 @@ class Engine{
             this.update(dt);
         }
 
-        this.ctx.fillStyle = "black";
+        this.ctx.fillStyle = "lightgrey";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         //do drawing here

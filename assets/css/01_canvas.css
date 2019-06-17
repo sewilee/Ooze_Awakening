@@ -3,6 +3,14 @@
     margin: 0;
 }
 
+.canvas-header{
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    font-family: 'IM Fell English SC', serif;
+    font-size: 48px;
+}
+
 canvas{
     width: 600px;
     height: 400px;
