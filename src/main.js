@@ -3,7 +3,6 @@ import Player from './player';
 import GameMap from './map';
 import Camera from './camera.js';
 import Villain from './villain.js';
-import Missile from './missile.js';
 import { random } from './utils';
 
 
@@ -58,11 +57,9 @@ engine.update = (dt) => {
         hero.facing = 4;
     }
     if (engine.input.isKeyDown("Space")) {
-        // debugger
-        const normalAtk = new Missile(hero.position, hero.offset, hero.facing);
-        engine.addObject(normalAtk);
+        hero.attack();
+
         engine.input.downkeys.Space = false;
-        // debugger
     }
     if (!engine.input.isKeyDown("ArrowUp") &&
         !engine.input.isKeyDown("ArrowDown") &&

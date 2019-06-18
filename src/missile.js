@@ -1,7 +1,8 @@
 import GameObject from './game_object';
+import Renderable from './renderable';
 
 class Missile extends GameObject{
-    constructor(position, offset, direction, dmg = -1, distance = 128){
+    constructor(position, offset, direction, dmg = -1, distance = 16){
         super();
         this.position = position;
         this.offset = offset;
@@ -9,17 +10,40 @@ class Missile extends GameObject{
         // this.move = [0, 0]
         this.dmg = dmg;
         this.distance = distance;
+
+        const img = "assets/images/fireball_0.png";
+
+        this.renderables = [
+            new Renderable(img, 512, 512, 8, 8, 48, 7, 15),  //down
+            new Renderable(img, 512, 512, 8, 8, 16, 7, 15),  //up
+            new Renderable(img, 512, 512, 8, 8, 48, 7, 15),  //down
+            new Renderable(img, 512, 512, 8, 8, 0, 7, 15),   //left 
+            new Renderable(img, 512, 512, 8, 8, 32, 7, 15),   //right
+        ]
+    }
+
+    movement(){
+        // debugger
+        if (this.direction === 0 || this.direction === 2){ this.translate(0, 5) }
+        if (this.direction === 1) { this.translate(0, -5) }
+        if (this.direction === 3) { this.translate(-5, 0) }
+        if (this.direction === 4) { this.translate(5, 0) }
+
+        this.distance--;
     }
 
     draw(ctx){
-        // if()
-        if(this.direction === 0 || this.direction === 2){ this.position[1]++ }
-        if(this.direction === 1){ this.position[1]-- }
-        if(this.direction === 3){ this.position[0]-- }
-        if(this.direction === 4){ this.position[0]++ }
-        // debugger
-        ctx.fillStyle = "blue";
-        ctx.fillRect(this.position[0] + this.offset[0] + 32, this.position[1] + this.offset[1] + 32, 10, 10);
+        super.draw(ctx);
+        ctx.save();
+
+        this.movement();
+        ctx.translate(this.position[0] + this.offset[0], this.position[1] + this.offset[1]);
+        this.renderables[this.direction].draw(ctx);
+
+
+        // ctx.fillStyle = "blue";
+        // ctx.fillRect(this.position[0] + this.offset[0], this.position[1] + this.offset[1], 64, 64);
+        ctx.restore();
     }
 }
 
