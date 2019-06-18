@@ -6,7 +6,7 @@ class GameObject {
         this.position = [0, 0];
         this.children = [];
         this.prevPosition = [0, 0];
-
+        this.lastTime = new Date().getTime();
     }
     
     translate(x, y){

@@ -16,6 +16,7 @@ class Engine{
         this.objs = [];
         this.colliders = [];
         this.villains = [];
+        this.missiles = [];
         this.hero = null;
 
         this.input = new Input;
@@ -46,7 +47,6 @@ class Engine{
     addColliders(colliders){
         if(colliders instanceof Villain){
             this.villains.push(colliders)
-            // debugger
         } else if (colliders instanceof Player){
             this.hero = colliders;
         } else {
@@ -69,6 +69,25 @@ class Engine{
             }
         });
         return value;
+    }
+
+    villainsInTheArea(x, y, offset){
+        const villains = [];
+        this.villains.forEach(badGuy => {
+            const villPos = { x: badGuy.position[0] + 32 + offset[0], y: badGuy.position[1] + 64 + offset[1]};
+            const heroPos = { x: x + 32, y: y + 32 };
+
+            let dx = villPos.x - heroPos.x;
+            let dy = villPos.y - heroPos.y;
+
+            let length = Math.sqrt(dx ** 2 + dy ** 2);
+            
+            if(length <= 600){
+                villains.push(badGuy);
+            }
+        });
+
+        return villains
     }
 
     getVillain(x, y, offset){
@@ -104,9 +123,14 @@ class Engine{
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
             
             //do drawing here
-            this.objs.forEach(obj => {
-                obj.update(this, dt);
-                obj.draw(this.ctx, this.canvas);
+            this.objs.forEach((obj, idx) => {
+                if(obj instanceof Villain && obj.health <= 0){
+                    this.objs.splice(idx, 1);
+                } else {
+                    // debugger
+                    obj.update(this, dt);
+                    obj.draw(this.ctx, this.canvas);
+                }
             });
             
             if (this.hero.gameOver === true) {

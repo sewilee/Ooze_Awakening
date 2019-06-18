@@ -3,6 +3,7 @@ import Player from './player';
 import GameMap from './map';
 import Camera from './camera.js';
 import Villain from './villain.js';
+import Missile from './missile.js';
 import { random } from './utils';
 
 
@@ -38,25 +39,36 @@ engine.addColliders(badGuy);
 engine.update = (dt) => {
     if (engine.input.isKeyDown("ArrowUp")) {
         hero.translate(0, -250 * dt);
+        hero.lastFace = hero.facing;
         hero.facing = 1;
     }
     if (engine.input.isKeyDown("ArrowDown")) {
         hero.translate(0, 250 * dt);
+        hero.lastFace = hero.facing;
         hero.facing = 2;
     }
     if (engine.input.isKeyDown("ArrowLeft")) {
-    hero.translate(-250 * dt, 0);
-    hero.facing = 3;
+        hero.translate(-250 * dt, 0);
+        hero.lastFace = hero.facing;
+        hero.facing = 3;
     }
     if (engine.input.isKeyDown("ArrowRight")){
         hero.translate(250 * dt, 0);
+        hero.lastFace = hero.facing;
         hero.facing = 4;
+    }
+    if (engine.input.isKeyDown("Space")) {
+        // debugger
+        const normalAtk = new Missile(hero.position, hero.offset, hero.facing);
+        engine.addObject(normalAtk);
+        engine.input.downkeys.Space = false;
+        // debugger
     }
     if (!engine.input.isKeyDown("ArrowUp") &&
         !engine.input.isKeyDown("ArrowDown") &&
         !engine.input.isKeyDown("ArrowLeft") &&
         !engine.input.isKeyDown("ArrowRight")){
-        hero.facing = 0;
+        hero.facing = hero.lastFace;
     }
     camera.update(hero.position[0], hero.position[1]);
 };
