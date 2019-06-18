@@ -16,11 +16,23 @@ class Engine{
         this.objs = [];
         this.colliders = [];
         this.villains = [];
+        this.missiles = [];
         this.hero = null;
 
         this.input = new Input;
 
+        // this.gameOver = false;
+
         window.requestAnimationFrame(this.loop.bind(this));
+    }
+
+    endGame(){
+        const canvas = document.getElementById("canvas-endGame");
+        const ctx = canvas.getContext('2d');
+
+        ctx.font = "48pt Patrick Hand SC";
+        ctx.fillStyle = "red";
+        ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
     }
 
     addObject(obj){
@@ -35,7 +47,6 @@ class Engine{
     addColliders(colliders){
         if(colliders instanceof Villain){
             this.villains.push(colliders)
-            // debugger
         } else if (colliders instanceof Player){
             this.hero = colliders;
         } else {
@@ -60,6 +71,25 @@ class Engine{
         return value;
     }
 
+    villainsInTheArea(x, y, offset){
+        const villains = [];
+        this.villains.forEach(badGuy => {
+            const villPos = { x: badGuy.position[0] + 32 + offset[0], y: badGuy.position[1] + 64 + offset[1]};
+            const heroPos = { x: x + 32, y: y + 32 };
+
+            let dx = villPos.x - heroPos.x;
+            let dy = villPos.y - heroPos.y;
+
+            let length = Math.sqrt(dx ** 2 + dy ** 2);
+            
+            if(length <= 600){
+                villains.push(badGuy);
+            }
+        });
+
+        return villains
+    }
+
     getVillain(x, y, offset){
         let value = false;
         this.villains.forEach(badGuy => {
@@ -78,31 +108,45 @@ class Engine{
     }
 
     loop(){
-        let time = new Date().getTime();
-        let dt = (time - this.lastTime) / 1000;
-
-        //do update here
-        if(this.update){
-            this.update(dt);
-        }
-
-        this.ctx.fillStyle = "lightgrey";
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        //do drawing here
-        this.objs.forEach(obj => {
-            obj.update(this, dt);
-            obj.draw(this.ctx, this.canvas);
-        });
-
-        if(this.phyDebug){
-            this.colliders.forEach(collider => {
-                collider.draw(this.ctx, this.offset);
+        if(this.gameOver){
+            this.endGame();
+        } else {
+            let time = new Date().getTime();
+            let dt = (time - this.lastTime) / 2000;
+            
+            //do update here
+            if(this.update){
+                this.update(dt);
+            }
+            
+            this.ctx.fillStyle = "lightgrey";
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            //do drawing here
+            this.objs.forEach((obj, idx) => {
+                if(obj instanceof Villain && obj.health <= 0){
+                    this.objs.splice(idx, 1);
+                } else {
+                    // debugger
+                    obj.update(this, dt);
+                    obj.draw(this.ctx, this.canvas);
+                }
             });
+            
+            if (this.hero.gameOver === true) {
+                this.gameOver = true;
+            }
+            
+            if(this.phyDebug){
+                this.colliders.forEach(collider => {
+                    collider.draw(this.ctx, this.offset);
+                });
+            }
+    
+            this.lastTime = time;
+            window.requestAnimationFrame(this.loop.bind(this));
         }
-
-        this.lastTime = time;
-        window.requestAnimationFrame(this.loop.bind(this));
+        
     }
 }
 

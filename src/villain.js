@@ -15,9 +15,9 @@ class Villian extends GameObject{
         this.heroPos = hero.position;
         this.following = false;
         this.attackDMG = -1;
-        
-        this.lastTime = new Date().getTime();
 
+        this.health = 3;
+        
         const img = "assets/images/monster-art.png";
         
         this.renderables = [
@@ -113,6 +113,7 @@ class Villian extends GameObject{
                 let time = new Date().getTime();
                 let dt = (time - this.lastTime) / 1000;
                 if(dt > 1.25){
+                    console.log("attack")
                     this.attack();
                     this.lastTime = time;
                 }

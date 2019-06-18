@@ -7,7 +7,6 @@ class Box{
     }
 
     isInside(x, y, offset, w = 0, h = 0){
-
         let inX = (x > this.x + offset[0] && x < (this.x + offset[0] + this.w));
         let inY = (y > this.y + offset[1] && y < (this.y + offset[1] + this.h));
 

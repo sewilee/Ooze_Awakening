@@ -1,5 +1,8 @@
 import GameObject from './game_object';
 import Renderable from './renderable';
+import { fadeOutText } from './utils';
+import Missile from './missile';
+
 
 class Player extends GameObject{
     constructor(x, y, engine, offset){
@@ -11,7 +14,13 @@ class Player extends GameObject{
         this.currentHealth = 4 * this.hearts;
         this.prevHealth = this.currentHealth;
 
-        this.facing = 0
+        this.missiles = [];
+        this.villians = [];
+
+        this.gameOver = false;
+
+        this.facing = 0;
+        this.lastFace = this.facing;
         const img = "assets/images/slime-art.png";
 
         this.renderables = [
@@ -28,8 +37,29 @@ class Player extends GameObject{
         ]
     }
 
+    grabVillains(){
+        let pX = this.position[0] + this.offset[0] + this.renderables[0].subWidth / 2;
+        let pY = this.position[1] + this.offset[1] + this.renderables[0].subHeight - 10;
+        let villains = this.engine.villainsInTheArea(pX, pY, this.offset);
+        if(villains.length > 0){
+            this.villians = villains;
+        }
+    }
+
     updateHealth(hp){
         this.currentHealth += hp;
+        switch(this.currentHealth){
+            case 0:
+                this.gameOver = true;
+            case 1:
+                return fadeOutText("RUN AWAY!!")
+            case 4:
+                return fadeOutText("You are about to die");
+            case 8:
+                return fadeOutText("Maybe you should run");
+            default: 
+                return fadeOutText("-1 HP");
+        }
     }
 
     translate(x, y){
@@ -57,20 +87,20 @@ class Player extends GameObject{
     draw(ctx){
         super.draw(ctx);
         ctx.save();
-        
+
         ctx.translate(this.position[0] + this.offset[0], this.position[1] + this.offset[1]);
-
+        
         if(this.currentHealth < this.prevHealth){
-            let img = new Image();
-            img.src = "assets/images/klz_W4.png";
-
-            ctx.drawImage(img, 0, 0);
+            this.renderables[this.facing].draw(ctx);
+            // let img = new Image(); 
+            // img.src = "assets/images/klz_W4.png";
             this.prevHealth = this.currentHealth;
         } else {
-            this.renderables[this.facing].draw(ctx);
+            this.renderables[this.facing].draw(ctx)
         }
 
-        // debugger
+        this.grabVillains();
+        
         // this.camera.update(this.position[0], this.position[1]);
 
 
