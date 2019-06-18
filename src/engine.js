@@ -3,6 +3,7 @@ import Input from './input';
 import Box from './play_box';
 import Villain from './villain';
 import Player from './player';
+import Missile from './missile';
 
 class Engine{
     constructor(){
@@ -49,6 +50,8 @@ class Engine{
             this.villains.push(colliders)
         } else if (colliders instanceof Player){
             this.hero = colliders;
+        } else if (colliders instanceof Missile) {
+            this.missiles.push(colliders);
         } else {
             colliders.forEach(collider => {
                 if(collider instanceof Box){
@@ -90,17 +93,30 @@ class Engine{
         return villains
     }
 
+    getMissile(x, y, offset){
+        let value = false;
+        this.missiles.forEach(bullet => {
+            const { subWidth, subHeight } = bullet.renderables[0];
+            const bulletPos = new Box(bullet.position[0], bullet.position[1], subHeight, subWidth);
+            // debugger
+            let result = bulletPos.isInside(x, y, offset);
+            // debugger
+            if(result === true){
+                value = bulletPos;
+            }
+        });
+        // debugger
+        return value;
+    }
+
     getVillain(x, y, offset){
         let value = false;
         this.villains.forEach(badGuy => {
             const { subWidth, subHeight } = badGuy.renderables[0];
-            // let dx = subWidth / 8;
             let dy = subHeight / 4;
-            // const badGuyPos = new Box(badGuy.position[0], badGuy.position[1], subHeight, subWidth);
             const badGuyPos = new Box(badGuy.position[0], badGuy.position[1] + dy, subHeight - dy, subWidth);
             let result = badGuyPos.isInside(x, y, offset);
             if(result === true){
-                // console.log("hit");
                 value = badGuy;
             }
         });
@@ -126,8 +142,11 @@ class Engine{
             this.objs.forEach((obj, idx) => {
                 if(obj instanceof Villain && obj.health <= 0){
                     this.objs.splice(idx, 1);
-                } else {
-                    // debugger
+                } 
+                if(obj instanceof Missile && obj.distance <= 0){
+                    this.objs.splice(idx, 1);
+                }
+                else {
                     obj.update(this, dt);
                     obj.draw(this.ctx, this.canvas);
                 }

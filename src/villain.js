@@ -31,11 +31,18 @@ class Villian extends GameObject{
     }
 
     checkCollision(){
-        let collider = this.engine.getCollision(
-            this.position[0] + this.offset[0] + this.renderables[0].subWidth / 2,
-            this.position[1] + this.offset[1] + this.renderables[0].subHeight - 10,
-            this.offset
-        )
+        let x = this.position[0] + this.offset[0] + this.renderables[0].subWidth / 2;
+        let y = this.position[1] + this.offset[1] + this.renderables[0].subHeight - 10;
+
+        let collider = this.engine.getCollision( x, y, this.offset )
+        if(this.engine.missiles.length > 0){
+            let attacked = this.engine.getMissile( x, y, this.offset )
+            // debugger
+            if(attacked){
+                console.log("hit")
+            }
+        }
+
 
         if (collider) { this.distance = this.moveX; }
     }

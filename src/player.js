@@ -3,7 +3,6 @@ import Renderable from './renderable';
 import { fadeOutText } from './utils';
 import Missile from './missile';
 
-
 class Player extends GameObject{
     constructor(x, y, engine, offset){
         super();
@@ -14,7 +13,6 @@ class Player extends GameObject{
         this.currentHealth = 4 * this.hearts;
         this.prevHealth = this.currentHealth;
 
-        this.missiles = [];
         this.villians = [];
 
         this.gameOver = false;
@@ -35,6 +33,12 @@ class Player extends GameObject{
             new Renderable(img, 512, 256, 8, 4, 16, 7, 15),   //left 
             new Renderable(img, 512, 256, 8, 4, 8, 7, 15),   //right
         ]
+    }
+
+    attack(){
+        const normalAtk = new Missile([this.position[0], this.position[1]], this.offset, this.facing);
+        this.engine.addObject(normalAtk);
+        this.engine.addColliders(normalAtk);
     }
 
     grabVillains(){
@@ -73,8 +77,6 @@ class Player extends GameObject{
         if (villain){
             x = 0;
             y = 0;
-            // const dmg = villain.attackDMG;
-            // this.updateHealth(dmg);
         }
 
         if (collider){
@@ -87,7 +89,7 @@ class Player extends GameObject{
     draw(ctx){
         super.draw(ctx);
         ctx.save();
-
+        // debugger
         ctx.translate(this.position[0] + this.offset[0], this.position[1] + this.offset[1]);
         
         if(this.currentHealth < this.prevHealth){
