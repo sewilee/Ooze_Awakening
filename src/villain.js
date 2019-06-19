@@ -1,5 +1,6 @@
 import GameObject from './game_object';
 import Renderable from './renderable';
+import { fadeOutText } from './utils';
 
 class Villian extends GameObject{
     constructor(x, y, engine, offset, distance = 200, facing = 1, hero) {
@@ -15,6 +16,7 @@ class Villian extends GameObject{
         this.heroPos = hero.position;
         this.following = false;
         this.attackDMG = -1;
+        this.id = null;
 
         this.health = 3;
         
@@ -30,20 +32,29 @@ class Villian extends GameObject{
         super.translate(x, y);
     }
 
-    checkCollision(){
-        let x = this.position[0] + this.offset[0] + this.renderables[0].subWidth / 2;
-        let y = this.position[1] + this.offset[1] + this.renderables[0].subHeight - 10;
+    updateHealth(hp) {
+        this.health += hp;
+        // return fadeOutText("DMG");
+    }
 
-        let collider = this.engine.getCollision( x, y, this.offset )
+    checkCollision(){
+        let x = this.position[0] + this.offset[0];
+        let y = this.position[1] + this.offset[1];
+        const { subWidth, subHeight } = this.renderables[0];
+
+        let collider = this.engine.getCollision( x + (subWidth / 2), y + (subHeight / 2), this.offset )
+
         if(this.engine.missiles.length > 0){
-            let attacked = this.engine.getMissile( x, y, this.offset )
-            // debugger
-            if(attacked){
-                console.log("hit")
+            let attack = this.engine.getMissileCollision(x, y + 32, this.offset );
+            if(attack){
+                let time = new Date().getTime();
+                let dt = (time - this.lastTime) / 1000;
+                if (dt > 1.25) {
+                    this.updateHealth(attack.dmg);
+                    this.lastTime = time;
+                }
             }
         }
-
-
         if (collider) { this.distance = this.moveX; }
     }
 
@@ -58,8 +69,8 @@ class Villian extends GameObject{
         let distX = Math.abs(villian.x - hero.x - hero.w / 2);
         let distY = Math.abs(villian.y - hero.y - hero.h / 2);
 
-        if (distX > (hero.w / 2 + villian.r + 200)){return this.following = false;}
-        if (distY > (hero.h / 2 + villian.r + 200)){return this.following = false;}
+        if (distX > (hero.w / 2 + villian.r + 150)){return this.following = false;}
+        if (distY > (hero.h / 2 + villian.r + 150)){return this.following = false;}
 
         if (distX > hero.w / 2) { return this.following = true; }
         if (distY > hero.h / 2) { return this.following = true; }
@@ -133,22 +144,25 @@ class Villian extends GameObject{
     draw(ctx) {
         super.draw(ctx);
         ctx.save();
+
         
         if(this.following){
             this.checkHeroPosition();
             this.checkCollision();
             this.followHero();
-    
+            
         } else if (!this.following){   
             this.checkHeroPosition();
             this.checkCollision();
             this.movement();
         }
 
+        // ctx.strokeStyle = "red";
+        // ctx.strokeRect(this.position[0] + this.offset[0], this.position[1] + this.offset[1], 64, 128);
+        
         ctx.translate(this.position[0] + this.offset[0], this.position[1] + this.offset[1]);
         
         this.renderables[this.facing].draw(ctx);
-
         ctx.restore();
     }
 }

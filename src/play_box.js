@@ -7,9 +7,15 @@ class Box{
     }
 
     isInside(x, y, offset, w = 0, h = 0){
-        let inX = (x > this.x + offset[0] && x < (this.x + offset[0] + this.w));
-        let inY = (y > this.y + offset[1] && y < (this.y + offset[1] + this.h));
+        let inX = (this.x + offset[0] < x && x < (this.x + offset[0] + this.w));
+        let inY = (this.y + offset[1] < y && y < (this.y + offset[1] + this.h));
 
+        return inX && inY;
+    }
+
+    hit(x, y, offset, w, h){
+        let inX = ((this.x + this.w + offset[0]) > x) && ((this.x + offset[0]) < (x + w));
+        let inY = ((this.y + this.h + offset[1]) > y) && ((this.y + offset[1]) < (y + h));
         return inX && inY;
     }
 

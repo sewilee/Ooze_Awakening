@@ -2,8 +2,7 @@ import Engine from './engine.js';
 import Player from './player';
 import GameMap from './map';
 import Camera from './camera.js';
-import Villain from './villain.js';
-import { random } from './utils';
+import { createMonsters } from './create_monsters';
 
 
 const mapJson = require('../assets/map/level01_50x50.json');
@@ -17,48 +16,38 @@ engine.addObject(map);
 engine.addColliders(map.getColliders());
 engine.offset = camera.offset;
 
-let hero = new Player(128, 128, engine, camera.offset);
+let hero = new Player(64, 256, engine, camera.offset);
 engine.addObject(hero);
 engine.addColliders(hero);
 
-let badGuy = new Villain(400, 400, engine, camera.offset, 320, 0, hero);
-engine.addObject(badGuy);
-engine.addColliders(badGuy);
-
-// for(let i = 0; i < 5; i++){
-    //     let ranPosX = random(64, 832);
-    //     let ranPosY = random(64, 832);
-    //     let ranDis = random(192, 448);
-    //     let ranFace = random(0, 1);
-    //     let badGuy = new Villain(ranPosX, ranPosY, engine, camera.offset, ranDis, ranFace);
-    //     engine.addObject(badGuy);
-    //     engine.addColliders(badGuy);
-    // }
+createMonsters(engine, "#01", 4, 11, 19, 4, 9, camera.offset, hero);
+createMonsters(engine, "#02", 3, 22, 30, 3, 7, camera.offset, hero);
+createMonsters(engine, "#03", 2, 6, 12, 10, 15, camera.offset, hero);
+createMonsters(engine, "#04", 2, 9, 15, 23, 26, camera.offset, hero);
     
 engine.update = (dt) => {
     if (engine.input.isKeyDown("ArrowUp")) {
-        hero.translate(0, -250 * dt);
+        hero.translate(0, -150 * dt);
         hero.lastFace = hero.facing;
         hero.facing = 1;
     }
     if (engine.input.isKeyDown("ArrowDown")) {
-        hero.translate(0, 250 * dt);
+        hero.translate(0, 150 * dt);
         hero.lastFace = hero.facing;
         hero.facing = 2;
     }
     if (engine.input.isKeyDown("ArrowLeft")) {
-        hero.translate(-250 * dt, 0);
+        hero.translate(-150 * dt, 0);
         hero.lastFace = hero.facing;
         hero.facing = 3;
     }
     if (engine.input.isKeyDown("ArrowRight")){
-        hero.translate(250 * dt, 0);
+        hero.translate(150 * dt, 0);
         hero.lastFace = hero.facing;
         hero.facing = 4;
     }
     if (engine.input.isKeyDown("Space")) {
         hero.attack();
-
         engine.input.downkeys.Space = false;
     }
     if (!engine.input.isKeyDown("ArrowUp") &&

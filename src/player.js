@@ -19,6 +19,8 @@ class Player extends GameObject{
 
         this.facing = 0;
         this.lastFace = this.facing;
+        this.lastAttack = 0;
+
         const img = "assets/images/slime-art.png";
 
         this.renderables = [
@@ -36,9 +38,14 @@ class Player extends GameObject{
     }
 
     attack(){
-        const normalAtk = new Missile([this.position[0], this.position[1]], this.offset, this.facing);
-        this.engine.addObject(normalAtk);
-        this.engine.addColliders(normalAtk);
+        let time = new Date().getTime();
+        let dt = (time - this.lastAttack) / 1000;
+        if(dt > 1){
+            const normalAtk = new Missile([this.position[0], this.position[1]], this.offset, this.facing);
+            this.engine.addObject(normalAtk);
+            this.engine.addColliders(normalAtk);
+            this.lastAttack = time;
+        }
     }
 
     grabVillains(){
@@ -89,7 +96,6 @@ class Player extends GameObject{
     draw(ctx){
         super.draw(ctx);
         ctx.save();
-        // debugger
         ctx.translate(this.position[0] + this.offset[0], this.position[1] + this.offset[1]);
         
         if(this.currentHealth < this.prevHealth){

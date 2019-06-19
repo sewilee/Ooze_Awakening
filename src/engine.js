@@ -16,7 +16,7 @@ class Engine{
         this.lastTime = new Date().getTime();
         this.objs = [];
         this.colliders = [];
-        this.villains = [];
+        this.villains = {};
         this.missiles = [];
         this.hero = null;
 
@@ -47,7 +47,7 @@ class Engine{
 
     addColliders(colliders){
         if(colliders instanceof Villain){
-            this.villains.push(colliders)
+            this.villains[colliders.id] = colliders;
         } else if (colliders instanceof Player){
             this.hero = colliders;
         } else if (colliders instanceof Missile) {
@@ -76,7 +76,7 @@ class Engine{
 
     villainsInTheArea(x, y, offset){
         const villains = [];
-        this.villains.forEach(badGuy => {
+        Object.values(this.villains).forEach(badGuy => {
             const villPos = { x: badGuy.position[0] + 32 + offset[0], y: badGuy.position[1] + 64 + offset[1]};
             const heroPos = { x: x + 32, y: y + 32 };
 
@@ -93,25 +93,22 @@ class Engine{
         return villains
     }
 
-    getMissile(x, y, offset){
+    getMissileCollision(x, y, offset){
         let value = false;
         this.missiles.forEach(bullet => {
             const { subWidth, subHeight } = bullet.renderables[0];
             const bulletPos = new Box(bullet.position[0], bullet.position[1], subHeight, subWidth);
-            // debugger
-            let result = bulletPos.isInside(x, y, offset);
-            // debugger
+            let result = bulletPos.hit(x, y, offset, 64, 128);
             if(result === true){
-                value = bulletPos;
+                value = bullet;
             }
         });
-        // debugger
         return value;
     }
 
     getVillain(x, y, offset){
         let value = false;
-        this.villains.forEach(badGuy => {
+        Object.values(this.villains).forEach(badGuy => {
             const { subWidth, subHeight } = badGuy.renderables[0];
             let dy = subHeight / 4;
             const badGuyPos = new Box(badGuy.position[0], badGuy.position[1] + dy, subHeight - dy, subWidth);
@@ -128,23 +125,25 @@ class Engine{
             this.endGame();
         } else {
             let time = new Date().getTime();
-            let dt = (time - this.lastTime) / 2000;
+            let dt = (time - this.lastTime) / 1000;
             
             //do update here
             if(this.update){
                 this.update(dt);
             }
             
-            this.ctx.fillStyle = "lightgrey";
+            this.ctx.fillStyle = "black";
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
             
             //do drawing here
             this.objs.forEach((obj, idx) => {
                 if(obj instanceof Villain && obj.health <= 0){
                     this.objs.splice(idx, 1);
+                    delete this.villains[obj.id];
                 } 
                 if(obj instanceof Missile && obj.distance <= 0){
                     this.objs.splice(idx, 1);
+                    this.missiles = [];
                 }
                 else {
                     obj.update(this, dt);
