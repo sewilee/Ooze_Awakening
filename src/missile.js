@@ -2,7 +2,7 @@ import GameObject from './game_object';
 import Renderable from './renderable';
 
 class Missile extends GameObject{
-    constructor(position, offset, direction, dmg = -1, distance = 32){
+    constructor(position, offset, direction, dmg = -1, distance = 128){
         super();
         this.position = position;
         this.offset = offset;

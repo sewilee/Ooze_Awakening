@@ -40,7 +40,7 @@ class Player extends GameObject{
     attack(){
         let time = new Date().getTime();
         let dt = (time - this.lastAttack) / 1000;
-        if(dt > 1){
+        if(dt > .5){
             const normalAtk = new Missile([this.position[0], this.position[1]], this.offset, this.facing);
             this.engine.addObject(normalAtk);
             this.engine.addColliders(normalAtk);
@@ -80,6 +80,11 @@ class Player extends GameObject{
 
         let collider = this.engine.getCollision(pX, pY, this.offset);
         let villain = this.engine.getVillain(pX, pY, this.offset);
+        let safe = this.engine.inSafeZone(pX, pY, this.offset);
+
+        if(safe){
+            this.gameOver = true;
+        }
 
         if (villain){
             x = 0;

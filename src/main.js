@@ -14,6 +14,7 @@ let camera = new Camera([document.getElementById("canvas").width, document.getEl
 let map = new GameMap(mapJson, "assets/map/level01_tileset.png", camera);
 engine.addObject(map);
 engine.addColliders(map.getColliders());
+engine.safeZone = map.safeZone;
 engine.offset = camera.offset;
 
 let hero = new Player(64, 256, engine, camera.offset);

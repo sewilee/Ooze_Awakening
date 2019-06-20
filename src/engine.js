@@ -19,21 +19,45 @@ class Engine{
         this.villains = {};
         this.missiles = [];
         this.hero = null;
+        this.safeZone = null;
 
         this.input = new Input;
+        this.gameStart = true;
 
         // this.gameOver = false;
 
         window.requestAnimationFrame(this.loop.bind(this));
     }
 
+    startGame(){
+        const canvas = document.getElementById("canvas-startGame");
+        const ctx = canvas.getContext('2d');
+
+        // ctx.fillStyle = "red";
+        // ctx.fillText("start", canvas.width, canvas.height);
+    }
+
     endGame(){
         const canvas = document.getElementById("canvas-endGame");
         const ctx = canvas.getContext('2d');
+        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.font = "48pt Patrick Hand SC";
-        ctx.fillStyle = "red";
-        ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+        if(this.hero.currentHealth <= 0){
+            const img = new Image();
+            img.src = "assets/images/gameOver_01.png";
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0);
+            };
+        } else {
+            const img = new Image();
+            img.src = "assets/images/endgame.png";
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0);
+            };
+        }
+
+
     }
 
     addObject(obj){
@@ -74,6 +98,16 @@ class Engine{
         return value;
     }
 
+    inSafeZone(x, y, offset){
+        let value = false;
+        let result = this.safeZone.isInside(x, y, offset);
+        if( result === true){
+            value = true;
+        }
+
+        return value;
+    }
+
     villainsInTheArea(x, y, offset){
         const villains = [];
         Object.values(this.villains).forEach(badGuy => {
@@ -95,12 +129,15 @@ class Engine{
 
     getMissileCollision(x, y, offset){
         let value = false;
-        this.missiles.forEach(bullet => {
+        this.missiles.forEach((bullet, idx) => {
             const { subWidth, subHeight } = bullet.renderables[0];
             const bulletPos = new Box(bullet.position[0], bullet.position[1], subHeight, subWidth);
             let result = bulletPos.hit(x, y, offset, 64, 128);
             if(result === true){
                 value = bullet;
+                let missileIndex = this.objs.indexOf(bullet);
+                this.objs.splice(missileIndex, 1);
+                this.missiles.splice(idx, 1);
             }
         });
         return value;
@@ -121,6 +158,9 @@ class Engine{
     }
 
     loop(){
+        // if(this.startGame){
+        //     this.startGame();
+        // }
         if(this.gameOver){
             this.endGame();
         } else {
@@ -143,7 +183,10 @@ class Engine{
                 } 
                 if(obj instanceof Missile && obj.distance <= 0){
                     this.objs.splice(idx, 1);
-                    this.missiles = [];
+                    let missileIndex = this.missiles.indexOf(obj);
+                    this.missiles.splice(missileIndex, 1);
+                    // debugger
+                    // this.missiles = [];
                 }
                 else {
                     obj.update(this, dt);
