@@ -10,6 +10,7 @@ class Engine{
         this.canvas = document.getElementById("canvas");
         this.ctx = this.canvas.getContext('2d');
         this.ctx.imageSmoothingEnabled = false;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.phyDebug = false;
         
@@ -57,7 +58,11 @@ class Engine{
             };
         }
 
-
+        document.addEventListener('keypress', (e) => {
+            if (e.code === "Space" && this.gameOver) {
+                document.location.reload();
+            }
+        });
     }
 
     addObject(obj){
