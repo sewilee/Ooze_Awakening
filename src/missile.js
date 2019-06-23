@@ -7,28 +7,27 @@ class Missile extends GameObject{
         this.position = position;
         this.offset = offset;
         this.direction = direction;
-        // this.move = [0, 0]
         this.dmg = dmg;
         this.distance = distance;
 
-        const img = "assets/images/fireball_0.png";
+        const img = "assets/images/slime-attack02.png";
 
         this.renderables = [
-            new Renderable(img, 512, 512, 8, 8, 48, 7, 15),  //down
-            new Renderable(img, 512, 512, 8, 8, 16, 7, 15),  //up
-            new Renderable(img, 512, 512, 8, 8, 48, 7, 15),  //down
-            new Renderable(img, 512, 512, 8, 8, 0, 7, 15),   //left 
-            new Renderable(img, 512, 512, 8, 8, 32, 7, 15),   //right
+            new Renderable(img, 256, 64, 4, 1, 0),  //down
+            new Renderable(img, 256, 64, 4, 1, 1),  //up
+            new Renderable(img, 256, 64, 4, 1, 0),  //down
+            new Renderable(img, 256, 64, 4, 1, 2),   //left 
+            new Renderable(img, 256, 64, 4, 1, 3),   //right
         ]
     }
 
     movement(){
-        if (this.direction === 0 || this.direction === 2){ this.translate(0, 5) }
-        if (this.direction === 1) { this.translate(0, -5) }
-        if (this.direction === 3) { this.translate(-5, 0) }
-        if (this.direction === 4) { this.translate(5, 0) }
+        if (this.direction === 0 || this.direction === 2){ this.translate(0, 7) }
+        if (this.direction === 1) { this.translate(0, -7) }
+        if (this.direction === 3) { this.translate(-7, 0) }
+        if (this.direction === 4) { this.translate(7, 0) }
 
-        this.distance -= 5;
+        this.distance -= 8;
     }
 
     draw(ctx){

@@ -22,9 +22,11 @@ class Game {
         engine.safeZone = map.safeZone;
         engine.offset = camera.offset;
 
-        let hero = new Player(12 * 64, 3 * 64, engine, camera.offset);
+        let hero = new Player(12 * 64, 5 * 64, engine, camera.offset);
         engine.addObject(hero);
         engine.addColliders(hero);
+
+        // createMonsters(engine, "test", 1, 10, 10, 10, 10, camera.offset, hero);
 
         createMonsters(engine, "#01", 3, 16, 25, 4, 7, camera.offset, hero);
         createMonsters(engine, "#02", 2, 26, 30, 4, 8, camera.offset, hero);

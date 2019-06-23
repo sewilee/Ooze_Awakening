@@ -4,7 +4,7 @@
 }
 
 @font-face {
-    font-family: 'Patrick Hand SC', cursive;
+    font-family: 'Quicksand', sans-serif;
 }
 
 .canvas-header{
@@ -12,7 +12,8 @@
     display: flex;
     justify-content: center;
     padding: 24px;
-    font-family: 'IM Fell English SC', serif;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
     font-size: 48px;
 }
 

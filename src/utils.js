@@ -10,7 +10,7 @@ export const fadeOutText = (text) => {
 
     let interval = setInterval(() => {
         canvas.width = canvas.width;
-        ctx.font = "24pt Patrick Hand SC";
+        ctx.font = "16pt Arial";
         ctx.fillStyle = "rgba(255, 0, 0, " + alpha + ")";
         ctx.fillText(text, canvas.width/2, canvas.height/2);
 
@@ -20,4 +20,16 @@ export const fadeOutText = (text) => {
             clearInterval(interval);
         }
     }, 10);
+};
+
+export const displayHearts = (heartArr) => {
+    const canvas = document.getElementById("canvas-dmg")
+    const ctx = canvas.getContext('2d');
+
+    const heartIMG = new Image();
+    heartIMG.src = "assets/images/hearts.png";
+    debugger
+    heartArr.forEach( (heart, idx) => {
+        ctx.drawImage(heartIMG, heart * 32, 0, 32, 32, idx * 32, 0, 32, 32 )
+    });
 };

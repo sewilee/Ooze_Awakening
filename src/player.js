@@ -37,40 +37,63 @@ class Player extends GameObject{
         ]
     }
 
+    getHealth(){
+        let health = this.currentHealth;
+        const hearts = [];
+
+        let numFullHearts = Math.floor(health / 4);
+        for(let i = numFullHearts; i > 0; i--){
+            hearts.push(0);
+        }
+        health -= numFullHearts * 4;
+        if(health > 0){
+            hearts.push(health)
+        }
+        while(hearts.length < this.hearts){
+            hearts.push(4);
+        }
+        return hearts;
+    }
+
     attack(){
         let time = new Date().getTime();
         let dt = (time - this.lastAttack) / 1000;
         if(dt > .5){
-            const normalAtk = new Missile([this.position[0], this.position[1]], this.offset, this.facing);
+            let x = this.position[0];
+            let y = this.position[1];
+            // switch(this.facing){
+            //     case 0 || 2:
+            //         y += 16;
+            //         break;
+            //     case 1:
+            //         y -= 16;
+            //         break;
+            //     case 3:
+            //         x -= 16;
+            //         break;
+            //     case 4:
+            //         x += 16;
+            //         break;
+            // }
+            const normalAtk = new Missile([x, y], this.offset, this.facing);
             this.engine.addObject(normalAtk);
             this.engine.addColliders(normalAtk);
             this.lastAttack = time;
         }
     }
 
-    grabVillains(){
-        let pX = this.position[0] + this.offset[0] + this.renderables[0].subWidth / 2;
-        let pY = this.position[1] + this.offset[1] + this.renderables[0].subHeight - 10;
-        let villains = this.engine.villainsInTheArea(pX, pY, this.offset);
-        if(villains.length > 0){
-            this.villians = villains;
-        }
-    }
+    // grabVillains(){
+    //     let pX = this.position[0] + this.offset[0] + this.renderables[0].subWidth / 2;
+    //     let pY = this.position[1] + this.offset[1] + this.renderables[0].subHeight - 10;
+    //     let villains = this.engine.villainsInTheArea(pX, pY, this.offset);
+    //     if(villains.length > 0){
+    //         this.villians = villains;
+    //     }
+    // }
 
     updateHealth(hp){
         this.currentHealth += hp;
-        switch(this.currentHealth){
-            case 0:
-                this.gameOver = true;
-            case 1:
-                return fadeOutText("RUN AWAY!!")
-            case 4:
-                return fadeOutText("You are about to die");
-            case 8:
-                return fadeOutText("Maybe you should run");
-            default: 
-                return fadeOutText("-1 HP");
-        }
+        return fadeOutText("-1 HP");
     }
 
     translate(x, y){
@@ -112,7 +135,8 @@ class Player extends GameObject{
             this.renderables[this.facing].draw(ctx)
         }
 
-        this.grabVillains();
+
+        // this.grabVillains();
         
         // this.camera.update(this.position[0], this.position[1]);
 

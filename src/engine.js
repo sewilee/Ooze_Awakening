@@ -4,6 +4,7 @@ import Box from './play_box';
 import Villain from './villain';
 import Player from './player';
 import Missile from './missile';
+import { displayHearts } from './utils';
 
 class Engine{
     constructor(){
@@ -113,33 +114,34 @@ class Engine{
         return value;
     }
 
-    villainsInTheArea(x, y, offset){
-        const villains = [];
-        Object.values(this.villains).forEach(badGuy => {
-            const villPos = { x: badGuy.position[0] + 32 + offset[0], y: badGuy.position[1] + 64 + offset[1]};
-            const heroPos = { x: x + 32, y: y + 32 };
+    // villainsInTheArea(x, y, offset){
+    //     const villains = [];
+    //     Object.values(this.villains).forEach(badGuy => {
+    //         const villPos = { x: badGuy.position[0] + 32 + offset[0], y: badGuy.position[1] + 64 + offset[1]};
+    //         const heroPos = { x: x + 32, y: y + 32 };
 
-            let dx = villPos.x - heroPos.x;
-            let dy = villPos.y - heroPos.y;
+    //         let dx = villPos.x - heroPos.x;
+    //         let dy = villPos.y - heroPos.y;
 
-            let length = Math.sqrt(dx ** 2 + dy ** 2);
+    //         let length = Math.sqrt(dx ** 2 + dy ** 2);
             
-            if(length <= 600){
-                villains.push(badGuy);
-            }
-        });
+    //         if(length <= 600){
+    //             villains.push(badGuy);
+    //         }
+    //     });
 
-        return villains
-    }
+    //     return villains
+    // }
 
-    getMissileCollision(x, y, offset){
+    getMissileCollision(x, y, offset, dy){
         let value = false;
         this.missiles.forEach((bullet, idx) => {
             const { subWidth, subHeight } = bullet.renderables[0];
-            const bulletPos = new Box(bullet.position[0], bullet.position[1], subHeight, subWidth);
-            let result = bulletPos.hit(x, y, offset, 64, 128);
+            const bulletPos = new Box(bullet.position[0] + 16, bullet.position[1], subHeight, 32);
+            let dh = 128 - dy;
+            let result = bulletPos.hit(x, y, offset, 64, dh);
             if(result === true){
-                value = bullet;
+                value = bullet; 
                 let missileIndex = this.objs.indexOf(bullet);
                 this.objs.splice(missileIndex, 1);
                 this.missiles.splice(idx, 1);
@@ -152,7 +154,20 @@ class Engine{
         let value = false;
         Object.values(this.villains).forEach(badGuy => {
             const { subWidth, subHeight } = badGuy.renderables[0];
-            let dy = subHeight / 4;
+            let dy;
+            switch(badGuy.health){
+                case 1:
+                    dy = 64;
+                    break;
+                case 2:
+                    dy = 48;
+                    break;
+                case 3:
+                    dy = 32;
+                    break;
+            }
+            // const { subWidth, subHeight } = badGuy.renderables[0];
+            // let dy = subHeight / 4;
             const badGuyPos = new Box(badGuy.position[0], badGuy.position[1] + dy, subHeight - dy, subWidth);
             let result = badGuyPos.isInside(x, y, offset);
             if(result === true){
@@ -180,6 +195,8 @@ class Engine{
             this.ctx.fillStyle = "black";
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
             
+            displayHearts(this.hero.getHealth());
+
             //do drawing here
             this.objs.forEach((obj, idx) => {
                 if(obj instanceof Villain && obj.health <= 0){
