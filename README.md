@@ -1,6 +1,6 @@
 ![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/readMe/Slime_title.svg)
 
-### Introduction
+### Introduction | [Live Site](https://sewilee.github.io/Ooze_Awakening/)
 The Legend of Slime is an adventure game inspired by Zelda. 
 
 Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Forest, ventures out of the village for the first time. It's one and only dream? To become a hero.
