@@ -93,7 +93,12 @@ class Player extends GameObject{
 
     updateHealth(hp){
         this.currentHealth += hp;
-        return fadeOutText("-1 HP");
+        switch(this.currentHealth){
+            case 0:
+                this.gameOver = true;
+            default: 
+                return fadeOutText("-1 HP");
+        }
     }
 
     translate(x, y){
