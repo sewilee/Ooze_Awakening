@@ -9,6 +9,8 @@ Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Fores
 * JavaScript
 * HTML Canvas
 * CSS
+* Adobe Photoshop
+* Adobe Illustrator
 
 ### Features
 ![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/readMe/screen_shot01.png)
