@@ -1,38 +1,34 @@
-# The Legend of Slime: Ooze's Awakening
+![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/readMe/Slime_title.svg)
 
-![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/blue-slime-png-2.svg)
-
-### Introduction
+### Introduction | [Live Site](https://sewilee.github.io/Ooze_Awakening/)
 The Legend of Slime is an adventure game inspired by Zelda. 
 
-Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Forest, ventures out of the village for the first time. It's one dream? To become a hero.
-
-### Features
-* Scrolling Tilemaps
-    * Collison Detection for hero and map terrain
-* Level 1 - Basic and Boss Encounter
-    * Hero
-        * move
-        * attack
-        * absorb (bonus)
-    * Basic Encounter
-        * move
-        * attack
-    * Boss Encounter
-        * move
-        * attack
-* Custom Artwork and Animations
-* Health Count
-* Items
+Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Forest, ventures out of the village for the first time. It's one and only dream? To become a hero.
 
 ### Technologies
 * JavaScript
 * HTML Canvas
 * CSS
+* Adobe Photoshop
+* Adobe Illustrator
 
-### Wireframe
+### Features
+![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/readMe/screen_shot01.png)
+* Scrolling Tilemaps
+    * Collison Detection for hero and map terrain
+* Player and Monster Encounter
+    * Hero
+        * move
+        * attack
+    * Monster
+        * move
+        * attack
+* Custom Artwork and Animations
 
-![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/00_Slime.svg)
+![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/images/slime-art.png)
+![](https://github.com/sewilee/Ooze_Awakening/blob/master/assets/images/monster-hp_03.png)
+
+* Health Count
 
 ### Development Timeline
 Day 1: 
@@ -48,7 +44,6 @@ Day 3:
 
 Day 4: 
 - add collisions and map scrolling feature
-- add villians ( if possible )
 - add css to front page
 
 Day 5: 
@@ -58,5 +53,4 @@ Day 6:
 - draw custom sprites and implement
 
 Day 7: 
-- add items feature
-
+- add health counter
