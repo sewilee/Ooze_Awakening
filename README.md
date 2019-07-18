@@ -16,7 +16,11 @@ Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Fores
 
 ### Features
 * Scrolling Tilemaps
-    * Collison Detection for hero and map terrain
+* Collison Detection
+    * Player vs Static Objects
+    * Monster vs Player
+    * Player vs Items
+    * Player's attack vs Monsters
 
     ![](assets/readMe/code-snippet_01.png)
 * Player and Monster Encounter
@@ -26,10 +30,15 @@ Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Fores
     * Monster
         * move
         * attack
+        * homing feature
+
+        ![](assets/readMe/code-snippet_03.png)
 * Custom Artwork and Animations
 
 ![](assets/images/items.png)
+
 ![](assets/images/slime-art.png)
+
 ![](assets/images/monster-hp_03.png)
 
 * Health Count
