@@ -24,11 +24,6 @@ class Player extends GameObject{
         const img = "assets/images/slime-art.png";
 
         this.renderables = [
-            // new Renderable("assets/images/klz_W4.png", 512, 192, 8, 3, 0, 7, 10),  //still
-            // new Renderable("assets/images/klz_W4.png", 512, 192, 8, 3, 0, 7, 15),  //up
-            // new Renderable("assets/images/klz_W4.png", 512, 192, 8, 3, 0, 7, 15),  //down
-            // new Renderable("assets/images/klz_W4.png", 512, 192, 8, 3, 0, 7, 15),   //left 
-            // new Renderable("assets/images/klz_W4.png", 512, 192, 8, 3, 8, 7, 15),   //right
             new Renderable(img, 512, 256, 8, 4, 0, 7, 10),  //still
             new Renderable(img, 512, 256, 8, 4, 24, 7, 15),  //up
             new Renderable(img, 512, 256, 8, 4, 0, 7, 15),  //down
@@ -61,20 +56,7 @@ class Player extends GameObject{
         if(dt > .5){
             let x = this.position[0];
             let y = this.position[1];
-            // switch(this.facing){
-            //     case 0 || 2:
-            //         y += 16;
-            //         break;
-            //     case 1:
-            //         y -= 16;
-            //         break;
-            //     case 3:
-            //         x -= 16;
-            //         break;
-            //     case 4:
-            //         x += 16;
-            //         break;
-            // }
+
             const normalAtk = new Missile([x, y], this.offset, this.facing);
             this.engine.addObject(normalAtk);
             this.engine.addColliders(normalAtk);
@@ -93,7 +75,6 @@ class Player extends GameObject{
 
     updateHealth(hp){
         this.currentHealth += hp;
-        // debugger
         switch(this.currentHealth){
             case 0:
                 this.gameOver = true;
@@ -131,10 +112,8 @@ class Player extends GameObject{
             let newHealth = this.currentHealth + health;
             if(newHealth >= this.hearts * 4){
                 let fullHealth = 4 * this.hearts - this.currentHealth;
-                // debugger
                 this.updateHealth(fullHealth)
             } else {
-                // debugger
                 this.updateHealth(health);
             }
         }
@@ -148,18 +127,10 @@ class Player extends GameObject{
         
         if(this.currentHealth < this.prevHealth){
             this.renderables[this.facing].draw(ctx);
-            // let img = new Image(); 
-            // img.src = "assets/images/klz_W4.png";
             this.prevHealth = this.currentHealth;
         } else {
             this.renderables[this.facing].draw(ctx)
         }
-
-
-        // this.grabVillains();
-        
-        // this.camera.update(this.position[0], this.position[1]);
-
 
         ctx.restore();
     }

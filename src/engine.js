@@ -184,8 +184,6 @@ class Engine{
                     dy = 32;
                     break;
             }
-            // const { subWidth, subHeight } = badGuy.renderables[0];
-            // let dy = subHeight / 4;
             const badGuyPos = new Box(badGuy.position[0], badGuy.position[1] + dy, subHeight - dy, subWidth);
             let result = badGuyPos.isInside(x, y, offset);
             if(result === true){
