@@ -21,8 +21,24 @@ Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Fores
     * Monster vs Player
     * Player vs Items
     * Player's attack vs Monsters
-
-    ![](assets/readMe/code-snippet_01.png)
+    ```    
+    getMissileCollision(x, y, offset, dy){
+        let value = false;
+        this.missiles.forEach((bullet, idx) => {
+            const { subWidth, subHeight } = bullet.renderables[0];
+            const bulletPos = new Box(bullet.position[0] + 16, bullet.position[1], subHeight, 32);
+            let dh = 128 - dy;
+            let result = bulletPos.hit(x, y, offset, 64, dh);
+            if(result === true){
+                value = bullet; 
+                let missileIndex = this.objs.indexOf(bullet);
+                this.objs.splice(missileIndex, 1);
+                this.missiles.splice(idx, 1);
+            }
+        });
+        return value;
+    }
+    ```
 * Player and Monster Encounter
     * Hero
         * move
@@ -31,8 +47,21 @@ Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Fores
         * move
         * attack
         * homing feature
+        ```
+        checkHeroPosition(){
+            let villian = {x: this.position[0] + 32, y: this.position[1] + 32, r:64};
+            let hero = {x: this.heroPos[0], y: this.heroPos[1], w: 64, h: 64};
 
-        ![](assets/readMe/code-snippet_03.png)
+            let distX = Math.abs(villian.x - hero.x - hero.w / 2);
+            let distY = Math.abs(villian.y - hero.y - hero.h / 2);
+
+            if (distX > (hero.w / 2 + villian.r + 150)){return this.following = false;}
+            if (distY > (hero.h / 2 + villian.r + 150)){return this.following = false;}
+
+            if (distX > hero.w / 2) { return this.following = true; }
+            if (distY > hero.h / 2) { return this.following = true; }
+        }
+        ```
 * Custom Artwork and Animations
 
 ![](assets/images/items.png)
@@ -44,7 +73,17 @@ Ooze the Slime, born as one of the lowest ranked monsters in the Forgotten Fores
 * Health Count
 
 ![](assets/images/hearts.png)
-![](assets/readMe/code-snippet_02.png)
+```
+updateHealth(hp){
+    this.currentHealth += hp;
+    switch(this.currentHealth){
+        case 0:
+            this.gameOver = true;
+        default: 
+            return fadeOutText(`${hp} HP`);
+    }
+}
+```
 
 ### Development Timeline
 Day 1: 

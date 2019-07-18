@@ -120,15 +120,12 @@ class Villian extends GameObject{
             case 1:
                 villPos = { x: this.position[0] + 32, y: this.position[1] + 96 };
                 break;
-                // debugger
             case 2:
                 villPos = { x: this.position[0] + 32, y: this.position[1] + 80 };
                 break;
-                // debugger
             case 3:
                 villPos = { x: this.position[0] + 32, y: this.position[1] + 64 };
                 break;
-                // debugger
         } 
         const heroPos = { x: this.heroPos[0] + 32, y: this.heroPos[1] + 32 };
         
