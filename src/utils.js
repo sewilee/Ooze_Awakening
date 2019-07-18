@@ -28,7 +28,6 @@ export const displayHearts = (heartArr) => {
 
     const heartIMG = new Image();
     heartIMG.src = "assets/images/hearts.png";
-    debugger
     heartArr.forEach( (heart, idx) => {
         ctx.drawImage(heartIMG, heart * 32, 0, 32, 32, idx * 32, 0, 32, 32 )
     });

@@ -1,9 +1,10 @@
 import Villain from "./villain";
 import { random } from './utils';
+import Item from "./item";
 
 
 export const createMonsters = (engine, area, numMonsters, minX, maxX, minY, maxY, offset, hero) => {
-    const multiplier = 64
+    const multiplier = 64;
     for (let i = 0; i < numMonsters; i++) {
         let ranPosX = random(minX * multiplier, maxX * multiplier);
         let ranPosY = random(minY * multiplier, maxY * multiplier);
@@ -16,3 +17,12 @@ export const createMonsters = (engine, area, numMonsters, minX, maxX, minY, maxY
         engine.addColliders(badGuy);
     }
 };
+
+export const createHealthPots = (engine, x, y, offset, effect, id) => {
+    const multiplier = 64;
+    let pos = [x * multiplier, y * multiplier];
+    let healthPot = new Item(pos, offset, effect, id);
+
+    engine.addObject(healthPot);
+    engine.addColliders(healthPot);
+}

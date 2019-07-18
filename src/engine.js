@@ -5,6 +5,7 @@ import Villain from './villain';
 import Player from './player';
 import Missile from './missile';
 import { displayHearts } from './utils';
+import Item from './item';
 
 class Engine{
     constructor(){
@@ -20,6 +21,7 @@ class Engine{
         this.colliders = [];
         this.villains = {};
         this.missiles = [];
+        this.items = {};
         this.hero = null;
         this.safeZone = null;
 
@@ -82,6 +84,8 @@ class Engine{
             this.hero = colliders;
         } else if (colliders instanceof Missile) {
             this.missiles.push(colliders);
+        } else if (colliders instanceof Item) {
+            this.items[colliders.id] = colliders;
         } else {
             colliders.forEach(collider => {
                 if(collider instanceof Box){
@@ -101,6 +105,20 @@ class Engine{
                 value = collider;
             }
         });
+        return value;
+    }
+
+    getItemCollision(x, y, offset){
+        let value = false;
+        Object.values(this.items).forEach(item => {
+            const itemBox = new Box(item.position[0], item.position[1], 64, 64);
+            let result = itemBox.isInside(x, y, offset);
+            if(result === true){
+                value = item;
+                item.used = true;
+            }
+        });
+
         return value;
     }
 
@@ -207,8 +225,10 @@ class Engine{
                     this.objs.splice(idx, 1);
                     let missileIndex = this.missiles.indexOf(obj);
                     this.missiles.splice(missileIndex, 1);
-                    // debugger
-                    // this.missiles = [];
+                }
+                if(obj instanceof Item && obj.used === true){
+                    this.objs.splice(idx, 1);
+                    delete this.items[obj.id];
                 }
                 else {
                     obj.update(this, dt);

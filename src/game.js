@@ -2,7 +2,7 @@ import Engine from './engine.js';
 import Player from './player';
 import GameMap from './map';
 import Camera from './camera.js';
-import { createMonsters } from './create_monsters';
+import { createMonsters, createHealthPots } from './create_object';
 
 const mapJson = require('../assets/map/level01_50x50.json');
 
@@ -25,6 +25,19 @@ class Game {
         let hero = new Player(12 * 64, 5 * 64, engine, camera.offset);
         engine.addObject(hero);
         engine.addColliders(hero);
+
+        createHealthPots(engine, 8, 5, camera.offset, "health/+2/1", "itemH1")
+        createHealthPots(engine, 40, 18, camera.offset, "health/+4/2", "itemH2")
+        createHealthPots(engine, 15, 26, camera.offset, "health/+2/1", "itemH3")
+        createHealthPots(engine, 19, 35, camera.offset, "health/-2/0", "itemH4")
+        createHealthPots(engine, 20, 35, camera.offset, "health/-2/0", "itemH5")
+        createHealthPots(engine, 19, 36, camera.offset, "health/-2/0", "itemH6")
+        createHealthPots(engine, 18, 36, camera.offset, "health/-2/0", "itemH7")
+        createHealthPots(engine, 17, 36, camera.offset, "health/-2/0", "itemH8")
+        createHealthPots(engine, 14, 39, camera.offset, "health/-2/0", "itemH9")
+        createHealthPots(engine, 13, 39, camera.offset, "health/-2/0", "itemH10")
+        createHealthPots(engine, 24, 38, camera.offset, "health/+4/2", "itemH11")
+        createHealthPots(engine, 37, 45, camera.offset, "health/+4/2", "itemH12")
 
         // createMonsters(engine, "test", 1, 10, 10, 10, 10, camera.offset, hero);
 

@@ -93,11 +93,12 @@ class Player extends GameObject{
 
     updateHealth(hp){
         this.currentHealth += hp;
+        // debugger
         switch(this.currentHealth){
             case 0:
                 this.gameOver = true;
             default: 
-                return fadeOutText("-1 HP");
+                return fadeOutText(`${hp} HP`);
         }
     }
 
@@ -109,6 +110,7 @@ class Player extends GameObject{
         let collider = this.engine.getCollision(pX, pY, this.offset);
         let villain = this.engine.getVillain(pX, pY, this.offset);
         let safe = this.engine.inSafeZone(pX, pY, this.offset);
+        let item = this.engine.getItemCollision(pX, pY, this.offset);
 
         if(safe){
             this.gameOver = true;
@@ -122,6 +124,19 @@ class Player extends GameObject{
         if (collider){
             x = 0;
             y = 0;
+        }
+
+        if (item){
+            const { health } = item.effect;
+            let newHealth = this.currentHealth + health;
+            if(newHealth >= this.hearts * 4){
+                let fullHealth = 4 * this.hearts - this.currentHealth;
+                // debugger
+                this.updateHealth(fullHealth)
+            } else {
+                // debugger
+                this.updateHealth(health);
+            }
         }
         super.translate(x, y);
     }
