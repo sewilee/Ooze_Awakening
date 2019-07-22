@@ -31,10 +31,12 @@ class Welcome{
     }
 
     playGame(){
-        this.document.addEventListener('keypress', (e) => {
+        this.document.addEventListener('keydown', (e) => {
             if(e.code === "Space" && !this.playing){
                 this.playing = true;
                 return new Game();
+            } else {
+                e.preventDefault();
             }
         });
     }
