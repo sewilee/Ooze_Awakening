@@ -64,15 +64,6 @@ class Player extends GameObject{
         }
     }
 
-    // grabVillains(){
-    //     let pX = this.position[0] + this.offset[0] + this.renderables[0].subWidth / 2;
-    //     let pY = this.position[1] + this.offset[1] + this.renderables[0].subHeight - 10;
-    //     let villains = this.engine.villainsInTheArea(pX, pY, this.offset);
-    //     if(villains.length > 0){
-    //         this.villians = villains;
-    //     }
-    // }
-
     updateHealth(hp){
         this.currentHealth += hp;
         switch(this.currentHealth){

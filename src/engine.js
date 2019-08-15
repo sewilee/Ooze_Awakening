@@ -28,17 +28,12 @@ class Engine{
         this.input = new Input;
         this.gameStart = true;
 
-        // this.gameOver = false;
-
         window.requestAnimationFrame(this.loop.bind(this));
     }
 
     startGame(){
         const canvas = document.getElementById("canvas-startGame");
         const ctx = canvas.getContext('2d');
-
-        // ctx.fillStyle = "red";
-        // ctx.fillText("start", canvas.width, canvas.height);
     }
 
     endGame(){
@@ -132,25 +127,6 @@ class Engine{
         return value;
     }
 
-    // villainsInTheArea(x, y, offset){
-    //     const villains = [];
-    //     Object.values(this.villains).forEach(badGuy => {
-    //         const villPos = { x: badGuy.position[0] + 32 + offset[0], y: badGuy.position[1] + 64 + offset[1]};
-    //         const heroPos = { x: x + 32, y: y + 32 };
-
-    //         let dx = villPos.x - heroPos.x;
-    //         let dy = villPos.y - heroPos.y;
-
-    //         let length = Math.sqrt(dx ** 2 + dy ** 2);
-            
-    //         if(length <= 600){
-    //             villains.push(badGuy);
-    //         }
-    //     });
-
-    //     return villains
-    // }
-
     getMissileCollision(x, y, offset, dy){
         let value = false;
         this.missiles.forEach((bullet, idx) => {
@@ -194,9 +170,6 @@ class Engine{
     }
 
     loop(){
-        // if(this.startGame){
-        //     this.startGame();
-        // }
         if(this.gameOver){
             this.endGame();
         } else {
